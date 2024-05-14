@@ -1,26 +1,96 @@
 [
   {
     "question": "10 + 6 / 2",
+    "latex": "10 +\\frac{6}{2}",
     "answer": "13",
     "wrong_answers": ["11", "8", "14"],
     "tags": ["equation"]
   },
   {
     "question": "(12 + 8) / 4",
+    "latex": "\\frac{12 + 8}{4}",
     "answer": "5",
     "wrong_answers": ["11", "16", "14"],
     "tags": ["equation"]
   },
   {
     "question": "9 - 2 + 4 * 3",
+    "latex": "9 - 2 + 4 \\times 3",
     "answer": "19",
     "wrong_answers": ["-9", "33", "-5"],
     "tags": ["equation"]
   },
   {
-    "question": "12-(7-3)",
+    "question": "12 - (7 - 3)",
     "answer": "8",
-    "wrong_answers": ["16", "2", "8"],
+    "wrong_answers": ["16", "2", "3"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "10(9 - 3)",
+    "answer": "60",
+    "wrong_answers": ["120", "106", "87"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "20 - (3 * 6)",
+    "latex": "20 - 3 \\times 6",
+    "answer": "2",
+    "wrong_answers": ["102", "38", "42"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "9 + (3 / 3)",
+    "latex": "9 + \\frac{3}{3}",
+    "answer": "10",
+    "wrong_answers": ["6", "4", "9"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "(9 + 3) / 3",
+    "latex": "\\frac{9 + 3}{3}",
+    "answer": "4",
+    "wrong_answers": ["6", "10", "9"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "8 - 3 + 5 * 2",
+    "latex": "8 - 3 + 5 \\times 2",
+    "answer": "15",
+    "wrong_answers": ["0", "20", "-5"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "10 - (5 - 2)",
+    "answer": "7",
+    "wrong_answers": ["13", "17", "3"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "10 - (2 * 5)",
+    "latex": "10 - (2 \\times 5)",
+    "answer": "0",
+    "wrong_answers": ["40", "20", "10"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "7(8 - 5)",
+    "answer": "21",
+    "wrong_answers": ["91", "51", "73"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "2 + 3 * 4^2",
+    "latex": "2 + 3 \\times 4^2",
+    "answer": "50",
+    "wrong_answers": ["400", "146", "80"],
+    "tags": ["equation"]
+  },
+  {
+    "question": "1 + 5 * 2^2",
+    "latex": "1 + 5 \\times 2^2",
+    "answer": "21",
+    "wrong_answers": ["144", "101", "24"],
     "tags": ["equation"]
   }
 ]
