@@ -1,8 +1,8 @@
 from random import shuffle
-
+from tags import Tags
 
 class BaseQuestion:
-    def __init__(self, question: str, answer: str, wrong_answers: list[str]) -> None:
+    def __init__(self, question: str, answer: str, wrong_answers: list[str], tags: list[Tags] | None = None) -> None:
         self.question: str = question
         self.answer: str = answer
         self.wrong_answers: list[str] = wrong_answers
@@ -10,6 +10,7 @@ class BaseQuestion:
         self.answer_colour: str = ""
         self.answer_dict: dict[str, str] = {}
         self.create_answer_dict()
+        self.tags: list[Tags] | None = tags
 
     def create_answer_dict(self) -> None:
         colours = ["yellow", "green", "orange", "blue"]
@@ -29,7 +30,9 @@ class BaseQuestion:
             f"Blue:   {self.answer_dict["blue"]}\n"
             "-------------------------\n"   
             f"Answer: {self.answer}\n"
-            f"Colour: {self.answer_colour}"
+            f"Colour: {self.answer_colour}\n"
+            "-------------------------\n"  
+            f"Tags: {self.tags}"
         )
         
         

@@ -1,14 +1,14 @@
 [
   {
-    "Question": "Question 1",
-    "Answer": "Answer 1",
-    "Wrong Answers": ["Answer 2", "Answer 3", "Answer 4"],
-    "Tags": []
+    "question": "Question 1",
+    "answer": "Answer 1",
+    "wrong_answers": ["Answer 2", "Answer 3", "Answer 4"],
+    "tags": []
   },
   {
-    "Question": "Question 2",
-    "Answer": "Answer 1",
-    "Wrong Answers": ["Answer 2", "Answer 3", "Answer 4"],
-    "Tags": []
+    "question": "Question 2",
+    "answer": "Answer 1",
+    "wrong_answers": ["Answer 2", "Answer 3", "Answer 4"],
+    "tags": []
   }
 ]

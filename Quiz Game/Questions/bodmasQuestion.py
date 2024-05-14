@@ -1,7 +1,7 @@
 import random
 
 from baseQuestion import BaseQuestion
-
+from tags import Tags
 
 class ThreeTermBodmasQuestion(BaseQuestion):
     def __init__(self) -> None:
@@ -49,7 +49,7 @@ class ThreeTermBodmasQuestion(BaseQuestion):
             if wrong_answer != answer and wrong_answer not in wrong_answers:
                 wrong_answers.append(wrong_answer)
 
-        super().__init__(question, answer, wrong_answers)
+        super().__init__(question, answer, wrong_answers, tags=[Tags.EQUATION])
 
 
 class FourTermBodmasQuestion(BaseQuestion):
@@ -81,7 +81,7 @@ class FourTermBodmasQuestion(BaseQuestion):
             if wrong_answer != answer and wrong_answer not in wrong_answers:
                 wrong_answers.append(wrong_answer)
 
-        super().__init__(question, answer, wrong_answers)
+        super().__init__(question, answer, wrong_answers, [Tags.EQUATION])
 
     def calculate_wrong_answers(self, answer: str = "") -> list[str]:
         wrong_answers: list[str] = []
