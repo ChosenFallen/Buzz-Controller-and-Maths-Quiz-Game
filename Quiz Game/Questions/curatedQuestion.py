@@ -8,9 +8,22 @@ question_sets = {
     "template": "C:/Users/curti/OneDrive/Python/Buzz Controllers/Quiz Game/Questions/Curated Questions/template.json",
     "bodmas": "C:/Users/curti/OneDrive/Python/Buzz Controllers/Quiz Game/Questions/Curated Questions/bodmasQuestions.json",
 }
-
-
-class ReadCuratedQuestion(BaseQuestion):
+class CuratedQuestionSet:
+    def __init__(self, JSON_File: str) -> None:
+        with open(JSON_File) as f:
+            data = json.load(f)
+        
+        self.questions: list[CuratedQuestion] = [CuratedQuestion(question_data) for question_data in data]
+        self.index = 0
+        
+    def get_next_question_data(self):
+        self.index += 1   
+        return self.get_question_data(self.index)
+    
+    def get_question_data(self, index: int):
+        return self.questions[index]
+    
+class CuratedQuestion(BaseQuestion):
     def __init__(self, question_data) -> None:
         used_tags: list[Tags] = [
             Tags(tag) for tag in question_data['tags'] if tag in Tags
@@ -27,6 +40,6 @@ class ReadCuratedQuestion(BaseQuestion):
 
 if __name__ == "__main__":
     print(os.getcwd())
-    question_data = ReadCuratedQuestion.load_question_data(question_sets["bodmas"], 0)
-    testing = ReadCuratedQuestion(question_data)
+    question_data = CuratedQuestion.load_question_data(question_sets["bodmas"], 0)
+    testing = CuratedQuestion(question_data)
     print(testing)
