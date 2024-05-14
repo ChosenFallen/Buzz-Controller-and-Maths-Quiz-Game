@@ -1,0 +1,26 @@
+[
+  {
+    "Question": "10 + 6 / 2",
+    "Answer": "13",
+    "Wrong Answers": ["11", "8", "14"],
+    "Tags": ["equation"]
+  },
+  {
+    "Question": "(12 + 8) / 4",
+    "Answer": "5",
+    "Wrong Answers": ["11", "16", "14"],
+    "Tags": ["equation"]
+  },
+  {
+    "Question": "9 - 2 + 4 * 3",
+    "Answer": "19",
+    "Wrong Answers": ["-9", "33", "-5"],
+    "Tags": ["equation"]
+  },
+  {
+    "Question": "12-(7-3)",
+    "Answer": "8",
+    "Wrong Answers": ["16", "2", "8"],
+    "Tags": ["equation"]
+  }
+]
