@@ -1,8 +1,10 @@
 from random import shuffle
+
 from tags import Tags
 
+
 class BaseQuestion:
-    def __init__(self, question: str, answer: str, wrong_answers: list[str], tags: list[Tags] | None = None) -> None:
+    def __init__(self, question: str, answer: str, wrong_answers: list[str], tags: list[Tags] | None = None, id: str | None = None) -> None:
         self.question: str = question
         self.answer: str = answer
         self.wrong_answers: list[str] = wrong_answers
@@ -11,6 +13,33 @@ class BaseQuestion:
         self.answer_dict: dict[str, str] = {}
         self.create_answer_dict()
         self.tags: list[Tags] | None = tags
+        self.id: str = id or self.create_id(question)
+
+    def create_id(self, question: str) -> str:
+        max_length = 20        
+
+        count = sum(ord(letter) for letter in question) % 10000
+        string = question.lower()
+        
+        for char in [" ", "?", "!", ",", "'", '"', "\\", "%", "[", "]", "{", "}", "|"]:
+            string = string.replace(char, "")
+        invalid_chars = {
+            "*": "X",
+            "/": "D",
+            "-": "M",
+            "+": "A",
+            "^": "P",
+            "&": "N",
+            "<": "LT",
+            ">": "GT",
+            ".": "_",
+            "=": "EQ",
+        }
+        for key, val in invalid_chars.items():
+            string = string.replace(key, val)
+        if len(string) > max_length:
+            string = string[:max_length]
+        return f"{string}-{count}"
 
     def create_answer_dict(self) -> None:
         colours = ["yellow", "green", "orange", "blue"]
@@ -32,7 +61,8 @@ class BaseQuestion:
             f"Answer: {self.answer}\n"
             f"Colour: {self.answer_colour}\n"
             "-------------------------\n"  
-            f"Tags: {self.tags}"
+            f"Tags: {self.tags}\n"
+            f"ID: {self.id}"
         )
         
         

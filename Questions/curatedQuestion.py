@@ -29,7 +29,6 @@ class CuratedQuestion(BaseQuestion):
         used_tags: list[Tags] = [
             Tags(tag) for tag in question_data['tags'] if tag in Tags
         ]
-        # self.id = todo
         super().__init__(question=question_data['question'], answer=question_data['answer'], wrong_answers=question_data['wrong_answers'], tags=used_tags)
 
     @staticmethod
