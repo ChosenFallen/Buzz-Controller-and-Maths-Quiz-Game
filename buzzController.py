@@ -1,44 +1,81 @@
+from threading import Thread
+
 import usb.backend.libusb1  # type: ignore
 import usb.core  # type: ignore
 import usb.util  # type: ignore
 
 
-class BuzzControllers:
+class BuzzController:
     def __init__(self) -> None:
         backend = usb.backend.libusb1.get_backend(
-            find_library=lambda x: "libusb-1.0.dll" # type: ignore
+            find_library=lambda x: "libusb-1.0.dll"  # type: ignore
         )
         self.device = usb.core.find(backend=backend, idVendor=0x054C, idProduct=0x1000)
 
         self.interface = 0
-        self.lights = [0, 0, 0, 0]
-        self.buttons = [
-            {"red": False, "yellow": False, "green": False, "orange": False, "blue": False},
-            {"red": False, "yellow": False, "green": False, "orange": False, "blue": False},
-            {"red": False, "yellow": False, "green": False, "orange": False, "blue": False},
-            {"red": False, "yellow": False, "green": False, "orange": False, "blue": False},
+        self.lights: list[int] = [0, 0, 0, 0]
+        self.buttons: list[dict[str, bool]] = [
+            {
+                "red": False,
+                "yellow": False,
+                "green": False,
+                "orange": False,
+                "blue": False,
+            },
+            {
+                "red": False,
+                "yellow": False,
+                "green": False,
+                "orange": False,
+                "blue": False,
+            },
+            {
+                "red": False,
+                "yellow": False,
+                "green": False,
+                "orange": False,
+                "blue": False,
+            },
+            {
+                "red": False,
+                "yellow": False,
+                "green": False,
+                "orange": False,
+                "blue": False,
+            },
         ]
-
-        self.bits = 0
-
+        self.changed: int = 0
+        self.bits: int = 0
+        self.thread: None | Thread = None
         self.device.set_configuration()  # type: ignore
         usb.util.claim_interface(self.device, self.interface)
         cfg = self.device.get_active_configuration()  # type: ignore
         self.endpoint = cfg[(0, 0)][0]
 
-    def is_button_pressed(self, controller: int, button: str):
+    def is_button_pressed(self, controller: int, button: str) -> bool:
+        """
+        Checks if a button is pressed
+
+        controller: The number of the controller (0-3)
+        button: The button to check (red, yellow, green, orange, blue)
+        """
         return self.buttons[controller][button]
 
-    def devicestatus(self):
+    def devicestatus(self) -> usb.core.Device | None:
+        """
+        Returns the device status
+        """
         # ID 054c:1000 Sony Corp. Wireless Buzz! Receiver
         backend = usb.backend.libusb1.get_backend(
             find_library=lambda x: "libusb-1.0.dll"
         )
-        self.device = usb.core.find(backend=backend, idVendor=0x054C, idProduct=0x1000)
-        return self.device
+        return usb.core.find(backend=backend, idVendor=0x054C, idProduct=0x1000)  # type: ignore
 
     def get_pressed_controllers(self) -> list[bool]:
-        pressed = []
+        """
+        Returns a list of which controllers are pressed
+        """
+        pressed: list[bool] = []
         for controller in self.buttons:
             if any(controller.values()):
                 pressed.append(True)
@@ -46,25 +83,48 @@ class BuzzControllers:
                 pressed.append(False)
         return pressed
 
-    def get_button_state(self, controller):
-        return self.buttons[controller]
-    
-    def get_buttons_state(self) -> list[dict[str, bool]]:
-        return self.buttons
-    
-    def get_lights(self) -> list[int]:
-        return self.lights
-    
-    def set_light(self, controller, state=False):
-        self.lights[controller] = 0xFF if state else 0
-        self.sendLightState()      
+    def get_button_state(self, controller: int) -> dict[str, bool]:
+        """
+        Returns the state of a controller
 
-    def set_lights(self, *args):
+        controller: The number of the controller (0-3)
+        """
+        return self.buttons[controller]
+
+    def get_buttons_state(self) -> list[dict[str, bool]]:
+        """
+        Returns the state of all the controllers
+        """
+        return self.buttons
+
+    def get_lights(self) -> list[int]:
+        """
+        Returns the state of the lights
+        """
+        return self.lights
+
+    def set_light(self, controller: int, state: bool = False) -> None:
+        """
+        Sets the state of a light
+
+        controller: The number of the controller (0-3)
+        state: The state to set the light to
+        """
+        self.lights[controller] = 0xFF if state else 0
+        self.sendLightState()
+
+    def set_lights(self, *args: bool) -> None:
+        """
+        Sets the state of multiple lights
+        """
         for idx, light in enumerate(args):
             self.lights[idx] = 0xFF if light else 0
         self.sendLightState()
 
-    def sendLightState(self):
+    def sendLightState(self) -> None:
+        """
+        Sends the current state of the lights to the controller
+        """
         self.device.ctrl_transfer(  # type: ignore
             0x21,
             0x09,
@@ -81,37 +141,68 @@ class BuzzControllers:
             ],
         )
 
-    def all_lights_off(self):
+    def all_lights_off(self) -> None:
+        """
+        Turns all lights off
+        """
         self.set_lights(False, False, False, False)
 
-    def all_lights_on(self):
+    def all_lights_on(self) -> None:
+        """
+        Turns all lights on
+        """
         self.set_lights(True, True, True, True)
 
+    def flip_light(self, controller: int) -> None:
+        """
+        Flips the state of a light
 
-    def flip_light(self, controller):
+        controller: The number of the controller (0-3)
+        """
         self.set_light(controller, not self.is_button_pressed(controller, "green"))
 
-    def read_controller(self, raw=False, timeout=1000):
+    def read_controller(self, raw: bool = False, timeout: int = 1000) -> None:
+        """
+        Reads the controller
 
-        # Reads the controller
-        # Returns the result of Parsecontroller (the changed bit) or raw
-
+        raw: If true, returns the raw data from the controller
+        timeout: How long to wait for data
+        """
         try:
-            cfg = self.device.get_active_configuration() # type: ignore
+            cfg = self.device.get_active_configuration()  # type: ignore
             self.endpoint = cfg[(0, 0)][0]
-            data = self.device.read( # type: ignore
+            data = self.device.read(  # type: ignore
                 self.endpoint.bEndpointAddress,
                 self.endpoint.wMaxPacketSize,
                 timeout=timeout,
             )
-            parsed = self.parse_controller(data)
+            self.parse_controller(data)
         except usb.core.USBError as _:
             data = None
-        if data != None and raw == False:
-            data = parsed
-        return data
 
-    def parse_controller(self, data):
+        self.thread = None
+
+    def update_controller(self, raw: bool = False, timeout: int = 1000) -> None:
+        """
+        Async function inside to update the controller
+
+        raw: If true, returns the raw data from the controller
+        timeout: How long to wait for data
+        """
+
+        # Reads the controller
+        # Returns the result of Parsecontroller (the changed bit) or raw
+        if self.thread is None:
+            self.thread = Thread(target=self.read_controller, args=(raw, timeout))
+            self.thread.start()
+            # return data
+
+    def parse_controller(self, data: bytes) -> None:
+        """
+        Parses the data from the controller
+
+        data: The data to parse
+        """
 
         # Function to parse the results of readcontroller
         # We break this out incase someone else wants todo something different
@@ -152,26 +243,5 @@ class BuzzControllers:
         oldbits = self.bits
         self.bits = (data[4] << 16) + (data[3] << 8) + data[2]
 
-        changed = oldbits | self.bits
-
-        return changed
-
-
-
-if __name__ == "__main__":
-    buzz = BuzzControllers()
-
-    buzz.all_lights_on()
-
-    while True:
-        r = buzz.read_controller(timeout=500)  # type: ignore
-        if r != None:
-            pressed = buzz.get_pressed_controllers()
-            print(pressed)
-            for idx, val in enumerate(pressed):
-                if val and buzz.get_buttons_state()[idx]["red"]:
-                    buzz.set_light(idx, False)
-            # buzz.turnOffControllerLights(pressed)
-            if not any(buzz.get_lights()):
-                buzz.all_lights_on()
+        self.changed = oldbits | self.bits
 

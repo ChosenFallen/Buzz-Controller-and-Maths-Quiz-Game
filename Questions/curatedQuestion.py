@@ -8,6 +8,7 @@ question_sets = {
     "template": "C:/Users/curti/OneDrive/Python/Buzz Controllers/Quiz Game/Questions/Curated Questions/template.json",
     "bodmas": "C:/Users/curti/OneDrive/Python/Buzz Controllers/Quiz Game/Questions/Curated Questions/bodmasQuestions.json",
 }
+
 class CuratedQuestionSet:
     def __init__(self, JSON_File: str) -> None:
         with open(JSON_File) as f:
@@ -28,6 +29,7 @@ class CuratedQuestion(BaseQuestion):
         used_tags: list[Tags] = [
             Tags(tag) for tag in question_data['tags'] if tag in Tags
         ]
+        # self.id = todo
         super().__init__(question=question_data['question'], answer=question_data['answer'], wrong_answers=question_data['wrong_answers'], tags=used_tags)
 
     @staticmethod
