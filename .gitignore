@@ -1,2 +1,4 @@
 *.pyc
 .sourcery.yaml
+.old/
+Questions/Images/
