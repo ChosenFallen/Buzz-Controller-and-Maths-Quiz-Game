@@ -1,5 +1,10 @@
+import os
+
 import matplotlib
 import matplotlib.pyplot as plt
+
+ALL_COLOURS = ["yellow", "green", "orange", "blue", "red"]
+ANSWER_COLOURS = ["yellow", "green", "orange", "blue"]
 
 # Runtime Configuration Parameters
 matplotlib.rcParams["mathtext.fontset"] = "cm"  # Font changed to Computer Modern
@@ -26,8 +31,8 @@ def latex2image(
 
     Returns
     -------
-    fig : object
-        Matplotlib figure object from the class: matplotlib.figure.Figure.
+    # fig : object
+    #     Matplotlib figure object from the class: matplotlib.figure.Figure.
 
     """
 
@@ -40,10 +45,11 @@ def latex2image(
         verticalalignment="center",
         fontsize=fontsize,
     )
+    file_path = os.path.join(os.getcwd(), "Questions", "Images", f"{image_name}.png")
+    plt.savefig(file_path)
 
-    plt.savefig(f"Quiz Game/Questions/Images/{image_name}.png")
-
-    return fig
+    return 
+    # return fig
 
 
 if __name__ == "__main__":

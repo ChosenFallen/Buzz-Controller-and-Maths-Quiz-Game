@@ -1,7 +1,7 @@
 import random
 
-from baseQuestion import BaseQuestion
-from tags import Tags
+from Questions.baseQuestion import BaseQuestion, Tags
+
 
 class ThreeTermBodmasQuestion(BaseQuestion):
     def __init__(self) -> None:
