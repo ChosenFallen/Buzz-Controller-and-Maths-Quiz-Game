@@ -1,7 +1,7 @@
 *.pyc
 .sourcery.yaml
 .old/
-Questions/Images/*
+questions/images/*
 __pycache__
 .venv
 .mypy_cache

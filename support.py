@@ -36,7 +36,7 @@ def latex2image(
         verticalalignment="center",
         fontsize=fontsize,
     )
-    file_path = join(getcwd(), "Questions", "Images", f"{image_name}.png")
+    file_path = join(getcwd(), "questions", "images", f"{image_name}.png")
     plt.savefig(file_path, transparent=True)
 
     return

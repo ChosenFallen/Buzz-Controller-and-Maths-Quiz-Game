@@ -9,7 +9,7 @@ import usb.backend.libusb1  # type: ignore
 import usb.core  # type: ignore
 import usb.util  # type: ignore
 
-from Questions.baseQuestion import BaseQuestionSet
+from questions.baseQuestion import BaseQuestionSet
 from settings import ALL_COLOURS, ANSWER_COLOURS
 
 

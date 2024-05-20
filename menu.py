@@ -18,7 +18,7 @@ class Title(pygame.sprite.Sprite):
     def __init__(self, all_sprites) -> None:
         super().__init__(all_sprites)
 
-        self.image = import_image("Questions", "Images", "ampere_maxwell_law@2x")
+        self.image = import_image("questions", "images", "ampere_maxwell_law@2x")
         self.rect = self.image.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 3))  # type: ignore
 
 

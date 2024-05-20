@@ -75,7 +75,7 @@ class BaseQuestion(Sprite):
                 
     @property
     def image_path(self) -> str:
-        return os.path.join(os.getcwd(), "Questions", "Images", f"{self.id}.png")
+        return os.path.join(os.getcwd(), "questions", "images", f"{self.id}.png")
          
          
     def create_latex_form(self) -> None:

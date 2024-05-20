@@ -3,7 +3,7 @@ from enum import Enum, auto
 import pygame
 
 from buzzSystem import BuzzBrain, GameType  # NoControllerBuzzBrain
-from Questions.curatedQuestion import CuratedQuestionSet, question_sets
+from questions.curatedQuestion import CuratedQuestionSet, question_sets
 from support import import_image, import_svg
 from settings import *
 from menu import Menu
@@ -104,7 +104,7 @@ class Game:
         #     self.question_set, num_of_controllers=4, game_type=GameType.ONE_QUESTION
         # )
         # buzz_brain = NoControllerBuzzBrain(question_set)
-        # self.test_surf = import_image("Questions", "Images", "ampere_maxwell_law@2x")
+        # self.test_surf = import_image("questions", "images", "ampere_maxwell_law@2x")
         
         self.menu = Menu(self.all_sprites)
         # self.test_surf.set_colorkey("white")

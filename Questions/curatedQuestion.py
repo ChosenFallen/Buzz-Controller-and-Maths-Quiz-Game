@@ -1,12 +1,11 @@
 import json
-import os
+from os.path import join
 
-
-from Questions.baseQuestion import BaseQuestion, BaseQuestionSet, Tags
+from questions.baseQuestion import BaseQuestion, BaseQuestionSet, Tags
 
 question_sets = {
-    "template": "C:/Users/curti/OneDrive/Python/Buzz Controllers/Quiz Game/Questions/Curated Questions/template.json",
-    "bodmas": "C:/Users/curti/OneDrive/Python/Buzz Controllers/Quiz Game/Questions/Curated Questions/bodmasQuestions.json",
+    "template": join("questions", "curated_questions", "template.json"),
+    "bodmas": join("questions", "curated_questions", "bodmasQuestions.json"),
 }
 
 

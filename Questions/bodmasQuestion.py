@@ -1,6 +1,6 @@
 import random
 
-from Questions.baseQuestion import BaseQuestion, Tags
+from questions.baseQuestion import BaseQuestion, Tags
 
 
 class ThreeTermBodmasQuestion(BaseQuestion):
