@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from abc import ABC
 from enum import Enum, auto
 from random import choice, shuffle
 from threading import Thread
@@ -9,7 +10,7 @@ import usb.core  # type: ignore
 import usb.util  # type: ignore
 
 from Questions.baseQuestion import BaseQuestionSet
-from Questions.utilities import ALL_COLOURS, ANSWER_COLOURS
+from settings import ALL_COLOURS, ANSWER_COLOURS
 
 
 class Colours(Enum):
@@ -18,6 +19,11 @@ class Colours(Enum):
     Green = auto()
     Orange = auto()
     Blue = auto()
+
+
+class GameType(Enum):
+    ONE_QUESTION = auto()
+    IDV_QUESTION = auto()
 
 
 class BuzzController:
@@ -62,9 +68,32 @@ class BuzzController:
         return button_state[button.lower()]
 
 
+# class NoControllerBuzzBrain:
+#     def __init__(self, question_set: BaseQuestionSet | None = None) -> None:
+#         self.question_set = question_set
+
+#     def update(self) -> None:
+#         pass
+
+#     def first_pressed_controller(self) -> str | None:
+#         return None
+
+#     def turn_off_all_lights(self) -> None:
+#         pass
+
+#     def turn_on_all_lights(self) -> None:
+#         pass
+
+#     def sendLightState(self) -> None:
+#         pass
+
+
 class BuzzBrain:
     def __init__(
-        self, question_set: BaseQuestionSet | None = None, num_of_controllers: int = 4
+        self,
+        question_set: BaseQuestionSet | None = None,
+        num_of_controllers: int = 4,
+        game_type: GameType = GameType.IDV_QUESTION,
     ) -> None:
         backend = usb.backend.libusb1.get_backend(
             find_library=lambda x: "libusb-1.0.dll"  # type: ignore
@@ -88,9 +117,33 @@ class BuzzBrain:
         self.question_set: BaseQuestionSet = (
             question_set if question_set is not None else BaseQuestionSet()
         )
-        self.num_of_controllers = num_of_controllers
-        self.reset_all_controllers()
+        # self.num_of_controllers = num_of_controllers
+        # self.reset_all_controllers()
         self.previous_pressed: list[int] = []
+        self.new_question = True
+        # self.game_type = game_type
+        
+        self.ending: bool = False
+        
+        self.setup(game_type=game_type, num_of_controllers=num_of_controllers)
+
+    def adjust_num_of_controllers(self, num_of_controllers: int) -> None:
+        self.num_of_controllers = num_of_controllers
+
+    def setup(self, game_type: GameType | None = None, num_of_controllers: int | None = None) -> None:
+        
+        if num_of_controllers:
+            self.num_of_controllers = num_of_controllers
+        
+        if game_type is not None:
+            self.game_type = game_type
+            
+        # self.turn_on_all_lights()
+        self.reset_all_controllers()
+
+    def quit(self):
+        self.turn_off_all_lights()
+        self.sendLightState()
 
     def reset_all_controllers(self) -> None:
         self.valid_controllers: list[int] = list(range(self.num_of_controllers))
@@ -166,16 +219,53 @@ class BuzzBrain:
         # if self.changed:
         #     print(f"={self.changed}|")
 
+    def handle_input(self) -> None:
+        match self.game_type:
+            case GameType.ONE_QUESTION:
+                self.ONE_input()
+            case GameType.IDV_QUESTION:
+                self.IDV_input()
+            case _:
+                self.ending = True
+    
+    def ONE_input(self) -> None:
+        index = self.first_pressed_controller()
+        if index is not None:
+            # print(index)
+            colour = self.first_pressed_button(index)
+            print(f"Controller {index} pressed {colour}")
+            if self.question_set.check_answer(colour):
+                print("Correct")
+                if not self.question_set.load_next_question():
+                    self.ending = True
+                    return
+                self.turn_on_all_lights()
+                self.reset_all_controllers()
+                self.new_question = True
+
+            else:
+                print("Wrong")
+                self.turn_off_index(index)
+                self.remove_controller(index)
+
+    
+    def IDV_input(self) -> None:
+        pass
+
     def update(self) -> None:
+        self.display_question()
+
         # Update controllers with button states
         if self.thread is None:
-
             # print(".")
             self.thread = Thread(target=self.read_controller, args=[])
             self.thread.start()
 
         # Send light state
         self.sendLightState()
+
+        # Handle input
+        self.handle_input()
 
     def first_pressed_controller(self) -> None | int:
         # print(
@@ -226,3 +316,9 @@ class BuzzBrain:
         if self.question_set is not None:
             return self.question_set.check_answer(colour)
         return False
+
+    def display_question(self) -> None:
+        if self.new_question:
+            self.turn_on_all_lights()
+            self.question_set.get_current_question_data().display_question()  # TODO: Allow question set to control the display
+            self.new_question = False

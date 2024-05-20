@@ -2,15 +2,27 @@ import os
 from enum import Enum, auto
 from random import shuffle
 
-from Questions.utilities import ALL_COLOURS, ANSWER_COLOURS, latex2image
+from pygame.sprite import Sprite
+
+from settings import ALL_COLOURS, ANSWER_COLOURS
+from support import latex2image
 
 
 class Tags(Enum):
     EQUATION = "equation"
 
 
-class BaseQuestion:
-    def __init__(self, question: str, answer: str, wrong_answers: list[str], tags: list[Tags] | None = None, id: str | None = None, latex_form: str | None = None) -> None:
+class BaseQuestion(Sprite):
+    def __init__(
+        self, 
+        question: str, 
+        answer: str, 
+        wrong_answers: list[str], 
+        sprite_groups, 
+        tags: list[Tags] | None = None, 
+        id: str | None = None, 
+        latex_form: str | None = None
+    ) -> None:
         self.question: str = question
         self.answer: str = answer
         self.wrong_answers: list[str] = wrong_answers
@@ -21,6 +33,10 @@ class BaseQuestion:
         self.tags: list[Tags] = tags or []
         self.id: str = id or self.create_id(question)
         self.latex_form: str | None = latex_form
+        super().__init__(sprite_groups)
+        
+        # self.image
+        # self.rect
         
 
     def create_id(self, question: str) -> str:
@@ -143,11 +159,11 @@ class BaseQuestionSet:
         return self.get_current_question_data().check_answer(guess_colour)
     
              
-if __name__ == "__main__":
-    testing = BaseQuestion("The Question", "Answer", ["Wrong1", "Wrong2", "Wrong3"])
+# if __name__ == "__main__":
+#     testing = BaseQuestion("The Question", "Answer", ["Wrong1", "Wrong2", "Wrong3"])
 
-    print(testing)
+#     print(testing)
     
-    testing2 = BaseQuestion("1 + 5 * 2^2", "Answer 2", ["Wrong1 2", "Wrong2 2", "Wrong3 2"], [Tags.EQUATION])
-    testing2.create_image()
-    print(testing2)
+#     testing2 = BaseQuestion("1 + 5 * 2^2", "Answer 2", ["Wrong1 2", "Wrong2 2", "Wrong3 2"], [Tags.EQUATION])
+#     testing2.create_image()
+#     print(testing2)

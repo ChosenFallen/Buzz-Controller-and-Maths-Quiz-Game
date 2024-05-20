@@ -4,7 +4,7 @@ from Questions.baseQuestion import BaseQuestion, Tags
 
 
 class ThreeTermBodmasQuestion(BaseQuestion):
-    def __init__(self) -> None:
+    def __init__(self, sprite_groups) -> None:
         while True:
             operators = ["+", "-", "*", "/"]
             first_operator = random.choice(operators)
@@ -49,11 +49,17 @@ class ThreeTermBodmasQuestion(BaseQuestion):
             if wrong_answer != answer and wrong_answer not in wrong_answers:
                 wrong_answers.append(wrong_answer)
 
-        super().__init__(question, answer, wrong_answers, tags=[Tags.EQUATION])
+        super().__init__(
+            question,
+            answer,
+            wrong_answers,
+            sprite_groups=sprite_groups,
+            tags=[Tags.EQUATION],
+        )
 
 
 class FourTermBodmasQuestion(BaseQuestion):
-    def __init__(self) -> None:
+    def __init__(self, sprite_groups) -> None:
         while True:
             base_operators = ["+", "-", "*", "/"]
             operators = [*base_operators]
@@ -81,7 +87,7 @@ class FourTermBodmasQuestion(BaseQuestion):
             if wrong_answer != answer and wrong_answer not in wrong_answers:
                 wrong_answers.append(wrong_answer)
 
-        super().__init__(question, answer, wrong_answers, [Tags.EQUATION])
+        super().__init__(question, answer, wrong_answers, sprite_groups=sprite_groups, tags=[Tags.EQUATION])
 
     def calculate_wrong_answers(self, answer: str = "") -> list[str]:
         wrong_answers: list[str] = []
@@ -134,9 +140,9 @@ class FourTermBodmasQuestion(BaseQuestion):
         return wrong_answers
 
 
-if __name__ == "__main__":
-    test1 = ThreeTermBodmasQuestion()
-    print(test1)
+# if __name__ == "__main__":
+#     test1 = ThreeTermBodmasQuestion()
+#     print(test1)
 
-    test2 = FourTermBodmasQuestion()
-    print(test2)
+#     test2 = FourTermBodmasQuestion()
+#     print(test2)
