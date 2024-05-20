@@ -7,7 +7,7 @@ import pygame
 
 
 def import_image(*path, alpha=True, format="png"):
-    full_path = join(*path) + f".{format}"
+    full_path = f"{join(*path)}.{format}"
     return (
         pygame.image.load(full_path).convert_alpha()
         if alpha
@@ -16,7 +16,7 @@ def import_image(*path, alpha=True, format="png"):
 
 
 def import_svg(*path, size: list[float]):
-    full_path = join(*path) + ".svg"
+    full_path = f"{join(*path)}.svg"
     return pygame.image.load_sized_svg(full_path, size)
 
 
