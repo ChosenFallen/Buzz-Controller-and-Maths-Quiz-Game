@@ -3,14 +3,19 @@ from enum import Enum, auto
 import pygame
 
 from buzzSystem import BuzzBrain, GameType  # NoControllerBuzzBrain
-from questions.curatedQuestion import CuratedQuestionSet, question_sets
-from support import import_image, import_svg
-from settings import *
 from menu import Menu
+from questions.curatedQuestion import CuratedQuestionSet, question_sets
+from settings import *
+from support import import_image, import_svg, BaseState
+
+
+class CursorType(Enum):
+    NORMAL = auto()
+    HAND = auto()
 
 
 class GameMode(Enum):
-    SETUP = auto()
+    # SETUP = auto()
     MENU = auto()
     MAIN_GAME = auto()
 
@@ -96,7 +101,9 @@ class Game:
         # display_question = True
 
         self.all_sprites = pygame.sprite.Group()  # type: ignore
-
+        self.buttons_group = pygame.sprite.Group()  # type: ignore
+        self.redirect_group = pygame.sprite.Group() # type: ignore
+        self.menu_group = pygame.sprite.Group() # type: ignore
         # self.question_set = CuratedQuestionSet(
         #     question_sets["bodmas"], [] #, self.all_sprites
         # )
@@ -105,25 +112,45 @@ class Game:
         # )
         # buzz_brain = NoControllerBuzzBrain(question_set)
         # self.test_surf = import_image("questions", "images", "ampere_maxwell_law@2x")
-        
-        self.menu = Menu(self.all_sprites)
+        self.state: BaseState = self.set_gamemode(GameMode.MENU)
         # self.test_surf.set_colorkey("white")
         # buzz_brain.setup(game_type=GameType.ONE_QUESTION)
 
+    def set_gamemode(self, mode: GameMode) -> BaseState:
+        self.gamemode = mode
+        match mode:
+            case GameMode.MENU:
+                return Menu([self.all_sprites, self.menu_group], self.buttons_group)
+            case GameMode.MAIN_GAME:
+                return BuzzBrain()
+
+    def change_gamemode(self, mode: GameMode) -> None:
+        if self.gamemode != mode:
+            self.state.kill()
+            self.state = self.set_gamemode(mode)
+            
+
     def run(self) -> None:
         while True:
-
             self.display_surface.fill("darkgray")
 
             # self.display_surface.blit(self.test_surf, (200, 200))
             self.all_sprites.update()
             self.all_sprites.draw(self.display_surface)
-            
+
+            hover = any(sprite.hover for sprite in self.buttons_group)
+            if hover:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            else:
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.exit()
 
             pygame.display.update()
+
+            # pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     def exit(self) -> None:
         # if self.brain:

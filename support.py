@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from os import getcwd
 from os.path import join
 
@@ -5,6 +6,16 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pygame
 
+
+class BaseState(ABC):
+    @abstractmethod
+    def update(self) -> None:
+        pass
+    
+    @abstractmethod
+    def kill(self) -> None:
+        pass
+    
 
 def import_image(*path, alpha=True, format="png"):
     full_path = f"{join(*path)}.{format}"

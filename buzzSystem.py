@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from abc import ABC
 from enum import Enum, auto
 from random import choice, shuffle
 from threading import Thread
@@ -11,6 +10,7 @@ import usb.util  # type: ignore
 
 from questions.baseQuestion import BaseQuestionSet
 from settings import ALL_COLOURS, ANSWER_COLOURS
+from support import BaseState
 
 
 class Colours(Enum):
@@ -88,7 +88,7 @@ class BuzzController:
 #         pass
 
 
-class BuzzBrain:
+class BuzzBrain(BaseState):
     def __init__(
         self,
         question_set: BaseQuestionSet | None = None,
@@ -122,25 +122,30 @@ class BuzzBrain:
         self.previous_pressed: list[int] = []
         self.new_question = True
         # self.game_type = game_type
-        
+
         self.ending: bool = False
-        
+
         self.setup(game_type=game_type, num_of_controllers=num_of_controllers)
 
     def adjust_num_of_controllers(self, num_of_controllers: int) -> None:
         self.num_of_controllers = num_of_controllers
 
-    def setup(self, game_type: GameType | None = None, num_of_controllers: int | None = None) -> None:
-        
+    def setup(
+        self, game_type: GameType | None = None, num_of_controllers: int | None = None
+    ) -> None:
+
         if num_of_controllers:
             self.num_of_controllers = num_of_controllers
-        
+
         if game_type is not None:
             self.game_type = game_type
-            
+
         # self.turn_on_all_lights()
         self.reset_all_controllers()
 
+    def kill(self):
+        pass
+    
     def quit(self):
         self.turn_off_all_lights()
         self.sendLightState()
@@ -227,7 +232,7 @@ class BuzzBrain:
                 self.IDV_input()
             case _:
                 self.ending = True
-    
+
     def ONE_input(self) -> None:
         index = self.first_pressed_controller()
         if index is not None:
@@ -248,7 +253,6 @@ class BuzzBrain:
                 self.turn_off_index(index)
                 self.remove_controller(index)
 
-    
     def IDV_input(self) -> None:
         pass
 
