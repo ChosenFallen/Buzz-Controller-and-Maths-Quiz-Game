@@ -103,7 +103,12 @@ class Game:
         self.all_sprites = pygame.sprite.Group()  # type: ignore
         self.buttons_group = pygame.sprite.Group()  # type: ignore
         self.redirect_group = pygame.sprite.Group() # type: ignore
+        
+        # Do we need?
         self.menu_group = pygame.sprite.Group() # type: ignore
+        
+        
+        
         # self.question_set = CuratedQuestionSet(
         #     question_sets["bodmas"], [] #, self.all_sprites
         # )
@@ -153,8 +158,7 @@ class Game:
             # pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     def exit(self) -> None:
-        # if self.brain:
-        #     self.brain.quit()
+        self.state.kill()
         pygame.quit()
         exit()
 

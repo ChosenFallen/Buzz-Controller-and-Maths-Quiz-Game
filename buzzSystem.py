@@ -143,10 +143,7 @@ class BuzzBrain(BaseState):
         # self.turn_on_all_lights()
         self.reset_all_controllers()
 
-    def kill(self):
-        pass
-    
-    def quit(self):
+    def kill(self) -> None:
         self.turn_off_all_lights()
         self.sendLightState()
 
