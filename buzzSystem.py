@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from enum import Enum, auto
+from os.path import join
+from os import getcwd
 from random import choice, shuffle
 from threading import Thread
 
@@ -95,8 +97,12 @@ class BuzzBrain(BaseState):
         num_of_controllers: int = 4,
         game_type: GameType = GameType.IDV_QUESTION,
     ) -> None:
+        # backend = usb.backend.libusb1.get_backend(
+        #     find_library=lambda x: "libusb-1.0.dll"  # type: ignore
+        # )
+        
         backend = usb.backend.libusb1.get_backend(
-            find_library=lambda x: "libusb-1.0.dll"  # type: ignore
+            find_library=lambda x: join(getcwd(), ".venv", "Lib", "site-packages", "libusb", "_platform", "_windows", "x64", "libusb-1.0.dll")  # type: ignore
         )
         self.device = usb.core.find(backend=backend, idVendor=0x054C, idProduct=0x1000)
         # print(self.device)

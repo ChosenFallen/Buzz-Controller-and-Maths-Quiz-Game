@@ -22,8 +22,6 @@ class Game:
         self.button_font = pygame.font.Font(join("fonts", "CT ProLamina.ttf"), 100)
         self.arrow_font = pygame.font.Font(join("fonts", "Arrows.ttf"), 150)
 
-
-
         # display_question = True
 
         self.all_sprites = pygame.sprite.Group()  # type: ignore
@@ -56,7 +54,7 @@ class Game:
                     self.main_title_font,
                     self.button_font,
                 )
-                
+
             case GameState.SETTINGS_MENU:
                 self.state = SettingsMenu(
                     self.all_sprites,
@@ -65,10 +63,10 @@ class Game:
                     self.button_font,
                     self.arrow_font,
                 )
-                
+
             case GameState.MAIN_GAME:
                 self.state = BuzzBrain()
-                
+
             case GameState.QUIT:
                 self.quit()
 
@@ -86,7 +84,7 @@ class Game:
 
             if self.state.redirect is not None:
                 self.change_gamemode(self.state.redirect)
-                
+
             self.display_surface.fill("darkgray")
 
             # self.display_surface.blit(self.test_surf, (200, 200))
