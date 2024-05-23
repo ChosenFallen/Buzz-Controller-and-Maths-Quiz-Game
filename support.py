@@ -6,16 +6,24 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pygame
 
+from settings import GameState
+
 
 class BaseState(ABC):
+    def __init__(self) -> None:
+        self.redirect: None | GameState = None
+        self.state_group = pygame.sprite.Group() # type: ignore
+        super().__init__()
+    
     @abstractmethod
     def update(self) -> None:
         pass
-    
-    @abstractmethod
+
     def kill(self) -> None:
-        pass
-    
+        for sprite in self.state_group:
+            sprite.kill()
+
+
 
 def import_image(*path, alpha=True, format="png"):
     full_path = f"{join(*path)}.{format}"
@@ -55,7 +63,9 @@ def latex2image(
 
 
 if __name__ == "__main__":
-    latex_expression = r"""$\vec{\nabla}\times\vec{H}=\vec{J}+\dfrac{\partial\vec{D}}{\partial t},$"""
+    latex_expression = (
+        r"""$\vec{\nabla}\times\vec{H}=\vec{J}+\dfrac{\partial\vec{D}}{\partial t},$"""
+    )
     image_name = "ampere_maxwell_law@2x"
     fig = latex2image(latex_expression, image_name, image_size_in=(3, 0.5))
 
