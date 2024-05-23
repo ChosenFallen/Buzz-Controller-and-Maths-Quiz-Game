@@ -3,7 +3,7 @@ from os.path import join
 import pygame
 
 from buzzSystem import BuzzBrain, GameType  # NoControllerBuzzBrain
-from menu import MainMenu, SettingsMenu
+from menu import MainMenu, MainSettingsMenu
 from questions.curatedQuestion import CuratedQuestionSet, question_sets
 from settings import *
 from settings import GameState
@@ -56,7 +56,7 @@ class Game:
                 )
 
             case GameState.SETTINGS_MENU:
-                self.state = SettingsMenu(
+                self.state = MainSettingsMenu(
                     self.all_sprites,
                     self.buttons_group,
                     self.sub_title_font,

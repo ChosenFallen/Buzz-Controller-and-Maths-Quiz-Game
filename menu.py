@@ -1,10 +1,10 @@
 from copy import copy
 from os.path import join
 
-from ui import Button, Title, BackButton
 from settings import *
 from settings import GameState
 from support import BaseState, import_image
+from ui import BackButton, Button, Title
 
 
 class MainMenu(BaseState):
@@ -54,7 +54,7 @@ class MainMenu(BaseState):
     #     self.display_surface.blit(self.title.image, self.title.rect)
 
 
-class SettingsMenu(BaseState):
+class MainSettingsMenu(BaseState):
     def __init__(
         self, all_sprites, buttons_group, title_font, button_font, arrow_font
     ) -> None:
@@ -97,4 +97,3 @@ class SettingsMenu(BaseState):
 
     # def kill(self) -> None:
     #     pass
-
