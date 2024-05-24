@@ -3,7 +3,7 @@ from os.path import join
 import pygame
 
 from buzzSystem import BuzzBrain, GameType  # NoControllerBuzzBrain
-from menu import MainMenu, MainSettingsMenu
+from menu import ControllerSettingsMenu, MainMenu, MainSettingsMenu
 from questions.curatedQuestion import CuratedQuestionSet, question_sets
 from settings import *
 from settings import GameState
@@ -20,7 +20,7 @@ class Game:
         )
         self.sub_title_font = pygame.font.Font(join("fonts", "CT ProLamina.ttf"), 125)
         self.button_font = pygame.font.Font(join("fonts", "CT ProLamina.ttf"), 100)
-        self.arrow_font = pygame.font.Font(join("fonts", "Arrows.ttf"), 150)
+        # self.arrow_font = pygame.font.Font(join("fonts", "Arrows.ttf"), 150)
 
         # display_question = True
 
@@ -61,7 +61,14 @@ class Game:
                     self.buttons_group,
                     self.sub_title_font,
                     self.button_font,
-                    self.arrow_font,
+                )
+
+            case GameState.CONTROLLERS_SETTINGS_MENU:
+                self.state = ControllerSettingsMenu(
+                    self.all_sprites,
+                    self.buttons_group,
+                    self.sub_title_font,
+                    self.button_font,
                 )
 
             case GameState.MAIN_GAME:

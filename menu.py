@@ -9,12 +9,13 @@ from ui import BackButton, Button, Title
 
 class MainMenu(BaseState):
     def __init__(self, all_sprites, buttons_group, title_font, button_font) -> None:
-        super().__init__()
-        # type: ignore
+        super().__init__(all_sprites)
+
+        self.buttons_group = buttons_group
 
         # self.display_surface = pygame.display.get_surface()
         self.title = Title(
-            [all_sprites, self.state_group],
+            [self.all_sprites, self.state_group],
             title_font,
             "Maths Quiz",
             (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4),
@@ -22,14 +23,14 @@ class MainMenu(BaseState):
 
         # button_font2 = pygame.font.Font(join("fonts", "recharge bd.otf"), 50)
         self.start_button = Button(
-            [all_sprites, buttons_group, self.state_group],
+            [self.all_sprites, self.buttons_group, self.state_group],
             (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2),
             "Start",
             button_font,
             self.start,
         )
         self.settings_button = Button(
-            [all_sprites, buttons_group, self.state_group],
+            [self.all_sprites, self.buttons_group, self.state_group],
             (3 * (WINDOW_WIDTH / 4), WINDOW_HEIGHT / 2),
             "Settings",
             button_font,
@@ -55,34 +56,32 @@ class MainMenu(BaseState):
 
 
 class MainSettingsMenu(BaseState):
-    def __init__(
-        self, all_sprites, buttons_group, title_font, button_font, arrow_font
-    ) -> None:
-        super().__init__()
-        # print(arrow_font)
-        # self.menu_group = pygame.sprite.Group()  # type: ignore
+    def __init__(self, all_sprites, buttons_group, title_font, button_font) -> None:
+        super().__init__(all_sprites)
+
+        self.buttons_group = buttons_group
 
         self.title = Title(
-            groups=[all_sprites, self.state_group],
+            groups=[self.all_sprites, self.state_group],
             font=title_font,
             text="Settings",
             pos=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4),
         )
         self.go_back_button = BackButton(
-            groups=[all_sprites, buttons_group, self.state_group],
+            groups=[self.all_sprites, self.buttons_group, self.state_group],
             pos=(WINDOW_WIDTH / 16, WINDOW_HEIGHT / 8),
             function=self.go_back,
             size=(50, 50),
         )
-        # self.start_button = Button(
-        #     [all_sprites, buttons_group, self.menu_group],
-        #     (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2),
-        #     "Start",
-        #     button_font,
-        #     self.start,
-        # )
+        self.start_button = Button(
+            [all_sprites, buttons_group, self.state_group],
+            (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2),
+            "Controllers",
+            button_font,
+            self.go_to_controllers_settings,
+        )
         # self.settings_button = Button(
-        #     [all_sprites, buttons_group, self.menu_group],
+        #     [all_sprites, buttons_group, self.state_group],
         #     (3 * (WINDOW_WIDTH / 4), WINDOW_HEIGHT / 2),
         #     "Settings",
         #     button_font,
@@ -91,9 +90,22 @@ class MainSettingsMenu(BaseState):
 
     def go_back(self):
         self.redirect = GameState.MAIN_MENU
+        
+    def go_to_controllers_settings(self):
+        self.redirect = GameState.CONTROLLERS_SETTINGS_MENU
 
     def update(self) -> None:
         pass
 
     # def kill(self) -> None:
     #     pass
+
+
+class ControllerSettingsMenu(BaseState):
+    def __init__(self, all_sprites, buttons_group, title_font, button_font) -> None:
+        super().__init__(all_sprites)
+        
+        self.buttons_group = buttons_group
+
+    def update(self) -> None:
+        pass

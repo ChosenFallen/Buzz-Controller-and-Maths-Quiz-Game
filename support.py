@@ -10,7 +10,8 @@ from settings import GameState
 
 
 class BaseState(ABC):
-    def __init__(self) -> None:
+    def __init__(self, all_sprites) -> None:
+        self.all_sprites = all_sprites
         self.redirect: None | GameState = None
         self.state_group = pygame.sprite.Group() # type: ignore
         super().__init__()
