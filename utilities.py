@@ -1,29 +1,9 @@
-from abc import ABC, abstractmethod
 from os import getcwd
 from os.path import join
 
 import matplotlib
 import matplotlib.pyplot as plt
 import pygame
-
-from settings import GameState
-
-
-class BaseState(ABC):
-    def __init__(self, all_sprites) -> None:
-        self.all_sprites = all_sprites
-        self.redirect: None | GameState = None
-        self.state_group = pygame.sprite.Group() # type: ignore
-        super().__init__()
-    
-    @abstractmethod
-    def update(self) -> None:
-        pass
-
-    def kill(self) -> None:
-        for sprite in self.state_group:
-            sprite.kill()
-
 
 
 def import_image(*path, alpha=True, format="png"):

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from enum import Enum, auto
-from os.path import join
 from os import getcwd
+from os.path import join
 from random import choice, shuffle
 from threading import Thread
 
@@ -10,9 +10,11 @@ import usb.backend.libusb1  # type: ignore
 import usb.core  # type: ignore
 import usb.util  # type: ignore
 
+from baseGameState import BaseGameState
+from constants import ALL_COLOURS, ANSWER_COLOURS
+from gameStateManager import GameStateManager
 from questions.baseQuestion import BaseQuestionSet
-from settings import ALL_COLOURS, ANSWER_COLOURS
-from support import BaseState
+from settingsManager import SettingsManager
 
 
 class Colours(Enum):
@@ -90,20 +92,30 @@ class BuzzController:
 #         pass
 
 
-class BuzzBrain(BaseState):
+def get_backend():
+    return usb.backend.libusb1.get_backend(
+        find_library=lambda x: join(getcwd(), ".venv", "Lib", "site-packages", "libusb", "_platform", "_windows", "x64", "libusb-1.0.dll")  # type: ignore
+    )
+
+
+class BuzzBrain(BaseGameState):
     def __init__(
-        self,
-        question_set: BaseQuestionSet | None = None,
-        num_of_controllers: int = 4,
-        game_type: GameType = GameType.IDV_QUESTION,
+        self, settings_manager: SettingsManager, game_state_manager: GameStateManager
     ) -> None:
+
+        super().__init__(settings_manager, game_state_manager)
+
+        # def __init__(
+        #     self,
+        #     question_set: BaseQuestionSet | None = None,
+        #     num_of_controllers: int = 4,
+        #     game_type: GameType = GameType.IDV_QUESTION,
+        # ) -> None:
         # backend = usb.backend.libusb1.get_backend(
         #     find_library=lambda x: "libusb-1.0.dll"  # type: ignore
         # )
-        
-        backend = usb.backend.libusb1.get_backend(
-            find_library=lambda x: join(getcwd(), ".venv", "Lib", "site-packages", "libusb", "_platform", "_windows", "x64", "libusb-1.0.dll")  # type: ignore
-        )
+
+        backend = get_backend()
         self.device = usb.core.find(backend=backend, idVendor=0x054C, idProduct=0x1000)
         # print(self.device)
         self.interface = 0
@@ -121,7 +133,9 @@ class BuzzBrain(BaseState):
         self.bits: int = 0
         self.changed: int = 0
         self.question_set: BaseQuestionSet = (
-            question_set if question_set is not None else BaseQuestionSet()
+            self.settings_manager.question_set
+            if self.settings_manager.question_set is not None
+            else BaseQuestionSet()
         )
         # self.num_of_controllers = num_of_controllers
         # self.reset_all_controllers()
@@ -131,7 +145,10 @@ class BuzzBrain(BaseState):
 
         self.ending: bool = False
 
-        self.setup(game_type=game_type, num_of_controllers=num_of_controllers)
+        self.setup(
+            game_type=self.settings_manager.game_type,
+            num_of_controllers=self.settings_manager.num_of_controllers,
+        )
 
     def adjust_num_of_controllers(self, num_of_controllers: int) -> None:
         self.num_of_controllers = num_of_controllers

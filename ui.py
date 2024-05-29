@@ -28,6 +28,7 @@ class Button(pygame.sprite.Sprite):
         self.hover_surf = self.create_hover_surf()
         self.clicked_surf = self.create_clicked_surf()
 
+        self.do_function: bool = False
         self.hover = False
 
         self.image = self.normal_surf
@@ -47,6 +48,9 @@ class Button(pygame.sprite.Sprite):
             border_radius=10,
         )
         text_render = self.font.render(self.text, True, "black")
+        x_scale = (self.size[0] * 0.8) / text_render.get_width()
+        if x_scale < 1:
+            text_render = pygame.transform.scale_by(text_render, x_scale)
         surf.blit(
             text_render,
             text_render.get_frect(center=(self.size[0] / 2, self.size[1] / 2)),
@@ -74,6 +78,9 @@ class Button(pygame.sprite.Sprite):
             border_radius=10,
         )
         text_render = self.font.render(self.text, True, "white")
+        x_scale = (self.size[0] * 0.8) / text_render.get_width()
+        if x_scale < 1:
+            text_render = pygame.transform.scale_by(text_render, x_scale)
         surf.blit(
             text_render,
             text_render.get_frect(center=(self.size[0] / 2, self.size[1] / 2)),
@@ -88,7 +95,7 @@ class Button(pygame.sprite.Sprite):
         return surf
 
     def create_clicked_surf(self) -> pygame.Surface:
-        
+
         return pygame.transform.smoothscale_by(self.create_hover_surf(), 0.8)
 
     def update(self):
@@ -142,6 +149,8 @@ class BackButton(pygame.sprite.Sprite):
 
         self.hover = False
 
+        self.do_function: bool = False
+
         self.image = self.normal_surf
         self.rect: pygame.FRect = self.image.get_frect(center=pos)  # type: ignore
         self.normal_rect: pygame.FRect = self.normal_surf.get_frect(center=pos)
@@ -161,8 +170,8 @@ class BackButton(pygame.sprite.Sprite):
             points=[
                 (0, self.size[1] / 2),
                 (self.size[0], 0),
-                (self.size[0], self.size[1])
-            ] # type: ignore
+                (self.size[0], self.size[1]),
+            ],  # type: ignore
         )
         return surf
 
@@ -176,8 +185,8 @@ class BackButton(pygame.sprite.Sprite):
             points=[
                 (0, self.size[1] / 2),
                 (self.size[0], 0),
-                (self.size[0], self.size[1])
-            ] # type: ignore
+                (self.size[0], self.size[1]),
+            ],  # type: ignore
         )
         return surf
 
@@ -191,11 +200,11 @@ class BackButton(pygame.sprite.Sprite):
             points=[
                 (self.size[0] * 0.2, self.size[1] / 2),
                 (self.size[0] * 0.8, self.size[1] * 0.2),
-                (self.size[0] * 0.8, self.size[1] * 0.8)
-            ] # type: ignore
+                (self.size[0] * 0.8, self.size[1] * 0.8),
+            ],  # type: ignore
         )
         return surf
-    
+
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
         if self.isOver(mouse_pos):

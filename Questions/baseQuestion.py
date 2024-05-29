@@ -4,8 +4,8 @@ from random import shuffle
 
 from pygame.sprite import Sprite
 
-from settings import ALL_COLOURS, ANSWER_COLOURS
-from support import latex2image
+from constants import ALL_COLOURS, ANSWER_COLOURS
+from utilities import latex2image
 
 
 class Tags(Enum):
