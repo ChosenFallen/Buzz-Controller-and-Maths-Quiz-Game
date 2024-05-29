@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from enum import Enum, auto
-from os.path import join
-from gameStateManager import GAMESTATE, GameStateManager
+from typing import TYPE_CHECKING
 
 import pygame
 
-from settingsManager import SettingsManager
+if TYPE_CHECKING:
+    from gameStateManager import GameStateManager
+    from settingsManager import SettingsManager
 
 
 # class GAMESTATE(Enum):
@@ -18,7 +18,9 @@ from settingsManager import SettingsManager
 
 
 class BaseGameState(ABC):
-    def __init__(self, settings_manager: SettingsManager, game_state_manager: GameStateManager) -> None:
+    def __init__(
+        self, settings_manager: "SettingsManager", game_state_manager: "GameStateManager"
+    ) -> None:
         self.settings_manager = settings_manager
         self.game_state_manager = game_state_manager
         # self.redirect: None | GAMESTATE = None

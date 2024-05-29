@@ -1,26 +1,23 @@
 from enum import Enum, auto
+from typing import TYPE_CHECKING
 
 import pygame
 
-from baseGameState import BaseGameState
+from constants import *
 from buzzSystem import BuzzBrain
 from menu import ControllerSettingsMenu, MainMenu, MainSettingsMenu
-from settingsManager import SettingsManager
 
+# from settingsManager import SettingsManager
 
-class GAMESTATE(Enum):
-    # SETUP = auto()
-    MAIN_MENU = auto()
-    SETTINGS_MENU = auto()
-    CONTROLLERS_SETTINGS_MENU = auto()
-    MAIN_GAME = auto()
-    QUIT = auto()
+if TYPE_CHECKING:
+    from baseGameState import BaseGameState
+    from settingsManager import SettingsManager
 
 
 class GameStateManager:
-    state: BaseGameState
+    state: "BaseGameState"
 
-    def __init__(self, state: GAMESTATE, settings_manager: SettingsManager) -> None:
+    def __init__(self, state: GAMESTATE, settings_manager: "SettingsManager") -> None:
         self.state_name: GAMESTATE = state
         self.settings_manager = settings_manager
         self.set_state(state)
@@ -59,3 +56,4 @@ class GameStateManager:
 
     def update(self) -> None:
         self.state.update()
+        # print(self.state_name)

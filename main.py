@@ -2,8 +2,7 @@ from os.path import join
 
 import pygame
 
-from buzzSystem import GameType
-from constants import WINDOW_HEIGHT, WINDOW_WIDTH
+from constants import *
 from gameStateManager import GAMESTATE, GameStateManager
 from questions.baseQuestion import BaseQuestionSet
 from settingsManager import SettingsManager

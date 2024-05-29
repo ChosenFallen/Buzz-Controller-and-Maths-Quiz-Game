@@ -1,33 +1,22 @@
 from __future__ import annotations
 
-from enum import Enum, auto
 from os import getcwd
 from os.path import join
 from random import choice, shuffle
 from threading import Thread
+from typing import TYPE_CHECKING
 
 import usb.backend.libusb1  # type: ignore
 import usb.core  # type: ignore
 import usb.util  # type: ignore
 
 from baseGameState import BaseGameState
-from constants import ALL_COLOURS, ANSWER_COLOURS
-from gameStateManager import GameStateManager
-from questions.baseQuestion import BaseQuestionSet
-from settingsManager import SettingsManager
+from constants import *
 
-
-class Colours(Enum):
-    Red = auto()
-    Yellow = auto()
-    Green = auto()
-    Orange = auto()
-    Blue = auto()
-
-
-class GameType(Enum):
-    ONE_QUESTION = auto()
-    IDV_QUESTION = auto()
+if TYPE_CHECKING:
+    from gameStateManager import GameStateManager
+    from questions.baseQuestion import BaseQuestionSet
+    from settingsManager import SettingsManager
 
 
 class BuzzController:

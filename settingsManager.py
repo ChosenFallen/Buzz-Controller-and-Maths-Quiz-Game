@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import pygame
 
-from buzzSystem import GameType
+from constants import GameType
 from questions.baseQuestion import BaseQuestionSet
 
 
