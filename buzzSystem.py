@@ -89,7 +89,7 @@ def get_backend():
 
 class BuzzBrain(BaseGameState):
     def __init__(
-        self, settings_manager: SettingsManager, game_state_manager: GameStateManager
+        self, settings_manager: "SettingsManager", game_state_manager: "GameStateManager"
     ) -> None:
 
         super().__init__(settings_manager, game_state_manager)

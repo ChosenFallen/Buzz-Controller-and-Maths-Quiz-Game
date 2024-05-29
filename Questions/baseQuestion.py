@@ -1,15 +1,10 @@
 import os
-from enum import Enum, auto
 from random import shuffle
 
 from pygame.sprite import Sprite
 
-from constants import ALL_COLOURS, ANSWER_COLOURS
+from constants import *
 from utilities import latex2image
-
-
-class Tags(Enum):
-    EQUATION = "equation"
 
 
 class BaseQuestion(Sprite):
@@ -122,12 +117,15 @@ class BaseQuestion(Sprite):
 class BaseQuestionSet:
     def __init__(self, questions: list[BaseQuestion] | None = None, shuffle_order: bool = False) -> None:
         self.questions: list[BaseQuestion] = [] if questions is None else questions
-        if shuffle_order: 
+        self.shuffle_order = shuffle_order
+        if self.shuffle_order: 
             shuffle(self.questions)
         self.index = 0
         
     def add_questions(self, questions: list[BaseQuestion]) -> None:
         self.questions.extend(questions)
+        if self.shuffle_order: 
+            shuffle(self.questions)
         
     def create_question_images(self) -> None:
         for question in self.questions:

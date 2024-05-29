@@ -1,7 +1,8 @@
 import json
 from os.path import join
 
-from questions.baseQuestion import BaseQuestion, BaseQuestionSet, Tags
+from constants import *
+from questions.baseQuestion import BaseQuestion, BaseQuestionSet
 
 question_sets = {
     "template": join("questions", "curated_questions", "template.json"),

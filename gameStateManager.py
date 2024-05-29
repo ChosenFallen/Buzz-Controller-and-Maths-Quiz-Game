@@ -1,10 +1,9 @@
-from enum import Enum, auto
 from typing import TYPE_CHECKING
 
 import pygame
 
-from constants import *
 from buzzSystem import BuzzBrain
+from constants import *
 from menu import ControllerSettingsMenu, MainMenu, MainSettingsMenu
 
 # from settingsManager import SettingsManager

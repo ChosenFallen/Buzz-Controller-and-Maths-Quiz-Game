@@ -27,6 +27,10 @@ class GAMESTATE(Enum):
     QUIT = auto()
 
 
+class Tags(Enum):
+    EQUATION = "equation"
+
+
 # class CursorType(Enum):
 #     NORMAL = auto()
 #     HAND = auto()

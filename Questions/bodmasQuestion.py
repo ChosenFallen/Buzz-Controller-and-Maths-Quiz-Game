@@ -1,6 +1,7 @@
 import random
 
-from questions.baseQuestion import BaseQuestion, Tags
+from constants import *
+from questions.baseQuestion import BaseQuestion, BaseQuestionSet
 
 
 class ThreeTermBodmasQuestion(BaseQuestion):

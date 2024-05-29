@@ -1,9 +1,7 @@
-from os.path import join
-
 import pygame
 
 from constants import *
-from gameStateManager import GAMESTATE, GameStateManager
+from gameStateManager import GameStateManager
 from questions.baseQuestion import BaseQuestionSet
 from settingsManager import SettingsManager
 from utilities import load_font
