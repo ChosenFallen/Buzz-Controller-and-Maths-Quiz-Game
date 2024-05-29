@@ -13,7 +13,9 @@ def import_image(*path, alpha=True, format="png"):
         if alpha
         else pygame.image.load(full_path).convert()
     )
-
+    
+def load_font(font_file_name, font_size)-> pygame.font.Font:
+    return pygame.font.Font(join("fonts", font_file_name), font_size)
 
 def import_svg(*path, size: list[float]):
     full_path = f"{join(*path)}.svg"
