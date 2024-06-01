@@ -13,8 +13,15 @@ if TYPE_CHECKING:
     from settingsManager import SettingsManager
 
 
+
 class GameStateManager:
     state: "BaseGameState"
+    state_mapping: dict[GAMESTATE, type[BaseGameState]] = {
+        GAMESTATE.MAIN_MENU: MainMenu,
+        GAMESTATE.SETTINGS_MENU: MainSettingsMenu,
+        GAMESTATE.CONTROLLERS_SETTINGS_MENU: ControllerSettingsMenu,
+        GAMESTATE.MAIN_GAME: BuzzBrain,
+    }
 
     def __init__(self, state: GAMESTATE, settings_manager: "SettingsManager") -> None:
         self.state_name: GAMESTATE = state
@@ -23,24 +30,10 @@ class GameStateManager:
 
     def set_state(self, state: GAMESTATE) -> None:
         self.state_name = state
-        match state:
-            case GAMESTATE.MAIN_MENU:
-                self.state = MainMenu(self.settings_manager, self)
-
-            case GAMESTATE.SETTINGS_MENU:
-                self.state = MainSettingsMenu(self.settings_manager, self)
-
-            case GAMESTATE.CONTROLLERS_SETTINGS_MENU:
-                self.state = ControllerSettingsMenu(self.settings_manager, self)
-
-            case GAMESTATE.MAIN_GAME:
-                self.state = BuzzBrain(self.settings_manager, self)
-
-            case GAMESTATE.QUIT:
-                self.quit()
-
-            case _:
-                raise NotImplementedError()
+        if state in self.state_mapping:
+            self.state = self.state_mapping[state](self.settings_manager, self)
+        else:
+            raise NotImplementedError()
 
     def change_state(self, state_name: GAMESTATE) -> None:
         if self.state_name != state_name:

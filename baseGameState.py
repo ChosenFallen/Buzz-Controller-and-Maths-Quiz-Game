@@ -19,7 +19,9 @@ if TYPE_CHECKING:
 
 class BaseGameState(ABC):
     def __init__(
-        self, settings_manager: "SettingsManager", game_state_manager: "GameStateManager"
+        self,
+        settings_manager: "SettingsManager",
+        game_state_manager: "GameStateManager",
     ) -> None:
         self.settings_manager = settings_manager
         self.game_state_manager = game_state_manager

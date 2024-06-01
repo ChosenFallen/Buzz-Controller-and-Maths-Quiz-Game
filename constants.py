@@ -24,7 +24,6 @@ class GAMESTATE(Enum):
     SETTINGS_MENU = auto()
     CONTROLLERS_SETTINGS_MENU = auto()
     MAIN_GAME = auto()
-    QUIT = auto()
 
 
 class Tags(Enum):

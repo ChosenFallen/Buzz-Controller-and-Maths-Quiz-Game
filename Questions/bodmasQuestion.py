@@ -88,7 +88,13 @@ class FourTermBodmasQuestion(BaseQuestion):
             if wrong_answer != answer and wrong_answer not in wrong_answers:
                 wrong_answers.append(wrong_answer)
 
-        super().__init__(question, answer, wrong_answers, sprite_groups=sprite_groups, tags=[Tags.EQUATION])
+        super().__init__(
+            question,
+            answer,
+            wrong_answers,
+            sprite_groups=sprite_groups,
+            tags=[Tags.EQUATION],
+        )
 
     def calculate_wrong_answers(self, answer: str = "") -> list[str]:
         wrong_answers: list[str] = []

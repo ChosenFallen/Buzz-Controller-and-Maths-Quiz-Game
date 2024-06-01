@@ -11,7 +11,9 @@ if TYPE_CHECKING:
 
 class MainMenu(BaseGameState):
     def __init__(
-        self, settings_manager: "SettingsManager", game_state_manager: "GameStateManager"
+        self,
+        settings_manager: "SettingsManager",
+        game_state_manager: "GameStateManager",
     ) -> None:
 
         # all_sprites, buttons_group, title_font, button_font) -> None:
@@ -35,11 +37,9 @@ class MainMenu(BaseGameState):
             (WINDOW_WIDTH / 4, WINDOW_HEIGHT / 2),
             "Start",
             self.settings_manager.button_font,
-            function=lambda: self.game_state_manager.change_state(
-                GAMESTATE.MAIN_GAME
-            ),
+            function=lambda: self.game_state_manager.change_state(GAMESTATE.MAIN_GAME),
         )
-        
+
         self.settings_button = Button(
             [
                 self.settings_manager.all_sprites,
@@ -74,7 +74,9 @@ class MainMenu(BaseGameState):
 
 class MainSettingsMenu(BaseGameState):
     def __init__(
-        self, settings_manager: "SettingsManager", game_state_manager: "GameStateManager"
+        self,
+        settings_manager: "SettingsManager",
+        game_state_manager: "GameStateManager",
     ) -> None:
         super().__init__(settings_manager, game_state_manager)
 
@@ -91,9 +93,7 @@ class MainSettingsMenu(BaseGameState):
                 self.state_group,
             ],
             pos=(WINDOW_WIDTH / 16, WINDOW_HEIGHT / 8),
-            function=lambda: self.game_state_manager.change_state(
-                GAMESTATE.MAIN_MENU
-            ),
+            function=lambda: self.game_state_manager.change_state(GAMESTATE.MAIN_MENU),
             size=(50, 50),
         )
         self.start_button = Button(
@@ -130,7 +130,9 @@ class MainSettingsMenu(BaseGameState):
 
 class ControllerSettingsMenu(BaseGameState):
     def __init__(
-        self, settings_manager: "SettingsManager", game_state_manager: "GameStateManager"
+        self,
+        settings_manager: "SettingsManager",
+        game_state_manager: "GameStateManager",
     ) -> None:
         super().__init__(settings_manager, game_state_manager)
 
@@ -155,4 +157,3 @@ class ControllerSettingsMenu(BaseGameState):
 
     def update(self) -> None:
         pass
-
