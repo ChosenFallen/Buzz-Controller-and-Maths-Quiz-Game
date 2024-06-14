@@ -106,6 +106,41 @@ class BuzzBrain(BaseGameState):
         #     find_library=lambda x: "libusb-1.0.dll"  # type: ignore
         # )
 
+        if self.num_of_controllers > 0:
+            self.setup_with_controllers(
+                game_type=self.settings_manager.game_type,
+                num_of_controllers=self.settings_manager.num_of_controllers,
+            )
+        else:
+            self.setup_without_controllers()
+
+        # if game_type is not None:
+        #     self.game_type = game_type
+
+        self.question_set: BaseQuestionSet = (
+            self.settings_manager.question_set
+            if self.settings_manager.question_set is not None
+            else BaseQuestionSet()
+        )
+        # self.num_of_controllers = num_of_controllers
+        # self.reset_all_controllers()
+        self.new_question = True
+        # self.game_type = game_type
+
+        self.ending: bool = False
+
+    def adjust_num_of_controllers(self, num_of_controllers: int) -> None:
+        self.num_of_controllers = num_of_controllers
+
+    def setup_without_controllers(self) -> None:
+        self.using_controllers = False
+        pass
+
+    def setup_with_controllers(
+        self, game_type: GameType | None = None, num_of_controllers: int | None = None
+    ) -> None:
+
+        self.using_controllers = True
         backend = get_backend()
         self.device = usb.core.find(backend=backend, idVendor=0x054C, idProduct=0x1000)
         # print(self.device)
@@ -123,30 +158,7 @@ class BuzzBrain(BaseGameState):
         self.thread: None | Thread = None
         self.bits: int = 0
         self.changed: int = 0
-        self.question_set: BaseQuestionSet = (
-            self.settings_manager.question_set
-            if self.settings_manager.question_set is not None
-            else BaseQuestionSet()
-        )
-        # self.num_of_controllers = num_of_controllers
-        # self.reset_all_controllers()
         self.previous_pressed: list[int] = []
-        self.new_question = True
-        # self.game_type = game_type
-
-        self.ending: bool = False
-
-        self.setup(
-            game_type=self.settings_manager.game_type,
-            num_of_controllers=self.settings_manager.num_of_controllers,
-        )
-
-    def adjust_num_of_controllers(self, num_of_controllers: int) -> None:
-        self.num_of_controllers = num_of_controllers
-
-    def setup(
-        self, game_type: GameType | None = None, num_of_controllers: int | None = None
-    ) -> None:
 
         if num_of_controllers:
             self.num_of_controllers = num_of_controllers

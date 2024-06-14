@@ -1,6 +1,13 @@
 import pygame
 
 
+class QuestionTextFrame(pygame.sprite.Sprite):
+    def __init__(self, groups, font, text: str, pos: tuple[float, float]) -> None:
+        super().__init__(groups)
+
+        self.image = font.render(text, True, "black")
+        self.rect = self.image.get_frect(center=pos) # type: ignore
+
 class Title(pygame.sprite.Sprite):
     def __init__(self, groups, font, text: str, pos: tuple[float, float]) -> None:
         super().__init__(groups)

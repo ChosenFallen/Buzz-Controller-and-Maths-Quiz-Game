@@ -30,6 +30,11 @@ class Tags(Enum):
     EQUATION = "equation"
 
 
+class DIFFICULTY(Enum):
+    EASY = auto()
+    MEDIUM = auto()
+    HARD = auto()
+
 # class CursorType(Enum):
 #     NORMAL = auto()
 #     HAND = auto()
